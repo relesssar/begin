@@ -10,7 +10,18 @@ $this->title = 'My Yii Application';
         <h1>Congratulations!</h1>
 
         <p class="lead">You have successfully created your Yii-powered application.</p>
-
+        <a href="<?= Yii::$app->urlManager->createUrl(['site/say']) ?>">
+            Say
+        </a>
+        <br>
+        <a href="<?= Yii::$app->urlManager->createUrl(['site/entry']) ?>">
+            Form
+        </a>
+        <br>
+        <a href="<?= Yii::$app->urlManager->createUrl(['country/']) ?>">
+            Country
+        </a>
+        <br><br><br>
         <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
     </div>
 
