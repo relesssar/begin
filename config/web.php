@@ -16,6 +16,23 @@ $config = [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'eFLxqQl6sCnYNzVmplSPk_srAuiVp-CM',
         ],
+        'kkbPayment' => [
+            'class' => 'naffiq\kkb\KKBPayment',
+
+            // Расположение публичного ключа
+            'publicKeyPath' => '@vendor/naffiq/yii2-kkb/payment-keys/kkbca.pem',
+            // Расположение приватного ключа
+            'privateKeyPath' => '@vendor/naffiq/yii2-kkb/payment-keys/test_prv.pem',
+            // Ключевая фраза к приватному ключу
+            'privateKeyPassword' => 'nissan',
+
+            // ID онлайн-магазина в системе kkb
+            'merchantId' => '92061101',
+            // ID сертификата онлайн-магазина в системе kkb
+            'merchantCertificateId' => '00C182B189',
+            // Название магазина
+            'merchantName' => 'Test shop',
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],

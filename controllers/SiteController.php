@@ -16,6 +16,8 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
+    public $enableCsrfValidation = false;
+
     public function behaviors()
     {
         return [
@@ -63,6 +65,7 @@ class SiteController extends Controller
     public function actionIndex()
     {
         return $this->render('index');
+
     }
 
     /**
@@ -124,12 +127,49 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
+
         return $this->render('about');
     }
 
     public function actionSay($target = 'World')
     {
-        return $this->render('say',['target'=>$target]);
+        /**
+         * @var $kkbPayment \naffiq\kkb\KKBPayment
+         */
+        $kkbPayment = \Yii::$app->get('kkbPayment');
+
+// В случае ошибки в этом методе могут выбрасываться исключения.
+// В этом случае нужно курить доку и смотреть конфиги
+        //$myorder = rand(111111,999999);
+        $myorder = '111223';
+        try {
+            $kkbPaymentBase64 = $kkbPayment->processRequest($myorder, '101');
+            // my session var
+            Yii::$app->session['mykkbPayment'] = $kkbPayment;
+
+        } catch (\yii\base\Exception $e) {
+            $kkbPaymentBase64 = "";
+            // TODO: Обработка ошибки
+        }
+
+// Выставляем адрес сервера платежей в зависимости от окружения
+        if (YII_ENV_DEV) {
+            $paymentUrl = 'https://testpay.kkb.kz/jsp/process/logon.jsp';
+        } else {
+            $paymentUrl = 'https://testpay.kkb.kz/jsp/process/logon.jsp';//https://epay.kkb.kz/jsp/process/logon.jsp
+        }
+        $result = $kkbPayment->generateMerchantXML1($myorder, '101', '398');
+
+        // my session var
+        Yii::$app->session['myorderid'] = $myorder;
+
+       return $this->render('say',[
+           'target'=>$target,
+           'paymentUrl'=>$paymentUrl,
+           'kkbPaymentBase64'=>$kkbPaymentBase64,
+           'kkbPayment'=>$kkbPayment,
+           'myorder'=>$myorder,
+           ]);
     }
 
     public function actionEntry()
@@ -138,7 +178,6 @@ class SiteController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             // данные в $model удачно проверены
-
             // делаем что-то полезное с $model ...
 
             return $this->render('entry-confirm', ['model' => $model]);
@@ -146,5 +185,18 @@ class SiteController extends Controller
             // либо страница отображается первый раз, либо есть ошибка в данных
             return $this->render('entry', ['model' => $model]);
         }
+    }
+
+    public function actionProcessResult()
+    {
+        /**
+         * @var $kkb \naffiq\kkb\KKBPayment
+         */
+        $kkb = \Yii::$app->get('kkbPayment');
+
+        $response = \Yii::$app->request->post('response');
+        $paymentResponse = $kkb->processResponse($response);
+
+        // Обработка $paymentResponse
     }
 }
