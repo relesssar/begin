@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "11dc19ae1bd8fd0737fec254fc20f7de",
+    "content-hash": "77c829dcdb23cef9eec566c6cb05636f",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -213,6 +213,44 @@
                 "html"
             ],
             "time": "2018-02-23T01:58:20+00:00"
+        },
+        {
+            "name": "kolesa-team/qazkom-epay",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kolesa-team/qazkom-epay.git",
+                "reference": "6179a4389077494317cc74f3c14bc907f012f937"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kolesa-team/qazkom-epay/zipball/6179a4389077494317cc74f3c14bc907f012f937",
+                "reference": "6179a4389077494317cc74f3c14bc907f012f937",
+                "shasum": ""
+            },
+            "replace": {
+                "iborodikhin/kazkom-epay": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.6",
+                "squizlabs/php_codesniffer": "1.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Epay\\": "src/",
+                    "Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Igor Borodikhin",
+                    "email": "iborodikhin@gmail.com"
+                }
+            ],
+            "description": "PHP library for Qazkom ePay",
+            "time": "2017-11-29T05:12:46+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",

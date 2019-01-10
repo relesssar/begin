@@ -6,10 +6,11 @@ use app\models\EntryForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use yii\web\Response;
+//use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use Epay\Client;
 
 class SiteController extends Controller
 {
@@ -129,9 +130,57 @@ class SiteController extends Controller
 
     public function actionSay($target = 'World')
     {
+        echo '<h2>123</h2>';
+        $client = new \Epay\Client(array(
+            'MERCHANT_CERTIFICATE_ID' => '00C182B189',
+            'MERCHANT_NAME'           => 'Test shop',
+            'PRIVATE_KEY_FN'          => \Yii::getAlias('@app') . '/vendor/kolesa-team/qazkom-epay/tests/data/test_prv.pem',
+            'PRIVATE_KEY_PASS'        => 'nissan',
+            'PRIVATE_KEY_ENCRYPTED'   => 1,
+            'XML_TEMPLATE_FN'         => \Yii::getAlias('@app') . '/vendor/kolesa-team/qazkom-epay/tests/data/template.xml',
+            'XML_TEMPLATE_CONFIRM_FN' => \Yii::getAlias('@app') . '/config/payment/template_confirm.xml',
+            'PUBLIC_KEY_FN'           => \Yii::getAlias('@app') . '/vendor/kolesa-team/qazkom-epay/tests/data/kkbca_test.pub',
+            'MERCHANT_ID'             => '92061101',
+        ));
+        $orderId = 111123;
+        $amount = 100;
+
+        $myxml = $client->processConfirmation (190110154533, 154533, 990000000001498, $client->getCurrencyId('KZT'), 100);
+        var_dump($myxml);
+        var_dump(Yii::$app->session['kkb_xml']);
+        $myxml = '';
+// Sign request for payment
+
+
+//$signature = $client->processRequest($orderId, $client->getCurrencyId('KZT'), $amount);
+
+// Process payment system response
+//$result = $client->processResponse($response);
+
+// Confirm request to unblock amount
+//$result = $client->processConfirmation($reference, $approvalCode, $orderId, $client->getCurrencyId('KZT'), $amount);
+
+//$filename = 'config/payment/template_confirm.xml';
+        //$filename = \Yii::getAlias('@app') /*+ '/config/payment/template_confirm.xml'*/;
+//        $filename = \Yii::getAlias('@app') . '/config/payment/template_confirm.xml';
+
+
+//
+//        var_dump($filename);
+//        $content = file_get_contents($filename);
+//        var_dump($content);
+
+//        $filename = \Yii::getAlias('@app') . '/vendor/kolesa-team/qazkom-epay/tests/data/test_prv.pem';
+//        var_dump($filename);
+//        $content = file_get_contents($filename);
+//        var_dump($content);
         return $this->render('say',['target'=>$target]);
     }
 
+    public function actionHello()
+    {
+        return $this->render('hello');
+    }
     public function actionEntry()
     {
         $model = new EntryForm();
